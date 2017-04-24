@@ -57,7 +57,7 @@ main() {
 	esac
 					
 	printf "AAPT: %s\nBuilding overlays...\n" "$aapt"
-	chmod -x "./packager/$aapt"
+	chmod +x "./packager/$aapt"
 	for f in $1/*/; do 
 		buildApk "$f" "./frameworks/n-lineage-nexus-5.apk" $aapt 2>> builds/log.txt
 	done
