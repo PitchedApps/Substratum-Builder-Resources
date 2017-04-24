@@ -23,7 +23,7 @@ buildApk() {
 		printf "\n%s\n" "$name"
 		# compile and save error log to $result
 		result="$("./packager/$3" p -M AndroidManifest.xml -S "${1}res" -I "$2" -f -F "builds/${name}.test.apk" 2>&1 > /dev/null)"
-		if [ ! -z "${result// }" ] ; then
+		if [ ! -z "$result" ] ; then
 			echo "$result" # just so the logs show on Travis
 			printf "~~~ %s ~~~\n\n%s\n\n" "$name" "$result" 1>&2 # print error and append package name
 		fi
