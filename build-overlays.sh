@@ -22,7 +22,7 @@ buildApk() {
 		name="$(basename "$1")"
 		printf "\n%s\n" "$name"
 		# compile and save error log to $result
-		result="$("./packager/$3" p -M AndroidManifest.xml -S "${1}/res" -I "$2" -f -F "builds/${name}.test.apk" 2>&1 > /dev/null)"
+		result="$("packager/$3" p -M AndroidManifest.xml -S "${1}res" -I "$2" -f -F "builds/${name}.test.apk" 2>&1 > /dev/null)"
 		if [ ! -z "$result" ] ; then
 			echo "$result" # just so the logs show on Travis
 			printf "~~~ %s ~~~\n\n%s\n\n" "$name" "$result" 1>&2 # print error and append package name
@@ -42,13 +42,13 @@ main() {
 	case "$OSTYPE" in
 		"")
 			echo "empty OSTYPE; defaulting to linux"
-			aapt=aapt86
+			aapt="aapt86"
 			;;
 		linux-gnu) 
-			aapt=aapt
+			aapt="aapt"
 			;;
 		cygwin|msys)
-			aapt=aapt.exe
+			aapt="aapt.exe"
 			;;
 		*)
 			printf "Unsupported OS type %s\n" "$OSTYPE" 1>&2
@@ -57,9 +57,9 @@ main() {
 	esac
 					
 	printf "AAPT: %s\nBuilding overlays...\n" "$aapt"
-	chmod +x "./packager/$aapt"
-	for f in $1/*/; do 
-		buildApk "$f" "./frameworks/n-lineage-nexus-5.apk" "$aapt" 2>> builds/log.txt
+	chmod +x "packager/$aapt"
+	for f in ${1}/*/; do
+		buildApk "$f" "frameworks/n-lineage-nexus-5.apk" "$aapt" 2>> builds/log.txt
 	done
 }
 
