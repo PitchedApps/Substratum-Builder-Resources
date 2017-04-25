@@ -55,7 +55,12 @@ main() {
 			exit 1
 			;;
 	esac
-					
+	
+	if [ -f "packager/$aapt" ]; then
+		printf "%s not found; make sure you run the script at its given directory\nYou are now in %s" "$aapt" "$PWD"
+		exit 2
+	fi
+	
 	printf "AAPT: %s\nBuilding overlays...\n" "$aapt"
 	chmod +x "packager/$aapt"
 	for f in ${1}/*/; do
