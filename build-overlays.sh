@@ -59,7 +59,7 @@ main() {
 	if [ -f "packager/$aapt" ]; then
 		cd packager
 		printf "%s not found; make sure you run the script at its given directory\nYou are now in %s\n" "$aapt" "$PWD"
-		ls
+		ls -l
 		exit 2
 	fi
 	
