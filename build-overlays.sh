@@ -22,7 +22,7 @@ buildApk() {
 		name="$(basename "$1")"
 		printf "\n%s\n" "$name"
 		# compile and save error log to $result
-		result="$("./$3" p -M AndroidManifest.xml -S "${1}res" -I "$2" -f -F "../builds/${name}.test.apk" 2>&1 > /dev/null)"
+		result="$("./packager/$3" p -M AndroidManifest.xml -S "${1}res" -I "$2" -f -F "builds/${name}.test.apk" 2>&1 > /dev/null)"
 		if [ ! -z "$result" ] ; then
 			echo "$result" # just so the logs show on Travis
 			printf "~~~ %s ~~~\n\n%s\n\n" "$name" "$result" 1>&2 # print error and append package name
@@ -56,14 +56,14 @@ main() {
 			;;
 	esac
 	cd packager
-	if [ ! -f "$aapt" ]; then
+	if [ ! -f "./$aapt" ]; then
 		printf "%s not found; make sure you run the script at its given directory\nYou are now in %s\n" "$aapt" "$PWD"
 		ls -l
 		exit 2
 	fi
-	
+	cd ..
 	printf "AAPT: %s\nBuilding overlays...\nfrom dir %s\n" "$aapt" "$PWD"
-	chmod +x "./$aapt"
+	chmod +x "./packager/$aapt"
 	for f in ${1}/*/; do
 		buildApk "$f" "frameworks/n-lineage-nexus-5.apk" "$aapt" 2>> builds/log.txt
 	done
